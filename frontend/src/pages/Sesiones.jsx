@@ -1,9 +1,9 @@
 /**
- * Página de Sesiones - Con Avatar 3D
+ * Página de Sesiones - Con Avatar 2D Animado
  */
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import Avatar3D from '../components/Avatar3D';
+import Avatar2D from '../components/Avatar2D';
 import { 
   MessageSquare, 
   Plus, 
@@ -373,21 +373,12 @@ export default function Sesiones() {
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 min-h-0">
         {/* Panel del Avatar */}
         <div className="bg-gradient-to-br from-[#DEEFE7] via-white to-[#DEEFE7] rounded-2xl border border-[#B4BEC9]/20 shadow-sm overflow-hidden">
-          <Suspense fallback={
-            <div className="h-full flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-12 h-12 border-4 border-[#159A9C]/30 border-t-[#159A9C] rounded-full animate-spin mx-auto mb-4" />
-                <p className="text-[#B4BEC9]">Cargando avatar...</p>
-              </div>
-            </div>
-          }>
-            <Avatar3D 
-              speaking={isSpeaking} 
-              emotion={avatarEmotion}
-              message={avatarMessage}
-              height="100%"
-            />
-          </Suspense>
+          <Avatar2D 
+            speaking={isSpeaking} 
+            emotion={avatarEmotion}
+            message={avatarMessage}
+            height="100%"
+          />
         </div>
 
         {/* Panel de Conversación */}
