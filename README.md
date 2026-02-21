@@ -45,12 +45,13 @@
    npm install
    ```
 4. Iniciar el servidor de desarrollo:
-   ````cmd
+   ```cmd
    npm run dev
-   ```## 3. Despliegue en Render (Producción / Gratis)
-   ````
+   ```
 
-El código ya está preparado automáticamente. Sube tus cambios a GitHub y sigue estos pasos en [Render.com](https://render.com/):
+## 3. Despliegue en Render (Producción / Gratis)
+
+Sigue estos pasos en [Render.com](https://render.com/):
 
 ### Paso A: Base de Datos (PostgreSQL)
 
@@ -67,9 +68,9 @@ El código ya está preparado automáticamente. Sube tus cambios a GitHub y sigu
    - **Start Command:** `cd backend && gunicorn backend.wsgi:application`
 3. Ve a **"Environment Variables"** y añade:
    - `DATABASE_URL` (pega aquí la URL interna que copiaste en el Paso A, pero **cambia la palabra `postgres://` por `postgresql://`** al inicio del link).
-   - `SECRET_KEY` (escribe una cadena de texto larga y aleatoria, será tu llave secreta de seguridad).
-   - `DEBUG` con el valor `False`.
-   - `PYTHON_VERSION` con el valor `3.10.0` (o la versión que uses).
+   - `SECRET_KEY` (django-insecure-2(y@+#^4+dilad1l_6o#-n8yzc2gb$hfc$@c#!tx=2^cao1+a0).
+   - `DEBUG` con el valor `True`.
+   - `PYTHON_VERSION` con el valor `3.12.3`.
 4. Guarda y espera a que el despliegue finalice exitosamente. Al terminar, **copia la URL pública web que Render te asignó** (ej. `https://tu-backend.onrender.com`).
 
 ### Paso C: Frontend Vite (Static Site)
@@ -81,4 +82,8 @@ El código ya está preparado automáticamente. Sube tus cambios a GitHub y sigu
    - **Publish Directory:** `dist`
 3. Ve a **"Environment Variables"** y añade:
    - `VITE_API_URL` (pega aquí la URL de tu backend del Paso B agregándole `/api` al final. Ej: `https://tu-backend.onrender.com/api`).
-4. Guarda y listo. ¡Tu Frontend estará funcionando 100% online y consumiendo la API correctamente!
+3.1. En la sección "Redirects/Rewrites" añade una nueva regla exactamente así: 
+    - **Source:** `/*`
+    - **Destination:** `/index.html`
+    - **Action:** `Rewrite`.
+4. Guarda y listo. 
