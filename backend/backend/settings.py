@@ -4,21 +4,26 @@ Django settings for backend project - AVI (Agente Virtual Inteligente)
 Configuración para el sistema de aprendizaje de inglés con Avatar 3D.
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
+import dj_database_url
+from dotenv import load_dotenv
+
+load_dotenv() # Carga las variables de entorno desde el archivo .env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2(y@+#^4+dilad1l_6o#-n8yzc2gb$hfc$@c#!tx=2^cao1+a0'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Será False en Render a menos que explícitamente pongas DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -42,6 +47,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # Permite serving de estáticos en Render
     'corsheaders.middleware.CorsMiddleware',  # CORS debe ir antes de CommonMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -71,18 +77,24 @@ TEMPLATES = [
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# Database - PostgreSQL (bdAVI)
+# Database - PostgreSQL
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bdAVI',
-        'USER': 'postgres',
-        'PASSWORD': '123456',
-        'HOST': 'localhost',
-        'PORT': '5432',
+DATABASE_URL = os.environ.get('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'bdAVI',
+            'USER': 'postgres',
+            'PASSWORD': '123456',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 
 
 # Custom User Model
@@ -132,13 +144,15 @@ SIMPLE_JWT = {
 }
 
 
-# CORS Configuration - Permitir frontend React/Vite
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',  # Vite dev server
-    'http://localhost:3000',  # React dev server
-    'http://127.0.0.1:5173',
-    'http://127.0.0.1:3000',
-]
+# CORS Configuration - Permitir frontend React/Vite y Ngrok
+CORS_ALLOW_ALL_ORIGINS = True
+
+# CORS_ALLOWED_ORIGINS = [
+#     'http://localhost:5173',  # Vite dev server
+#     'http://localhost:3000',  # React dev server
+#     'http://127.0.0.1:5173',
+#     'http://127.0.0.1:3000',
+# ]
 
 CORS_ALLOW_CREDENTIALS = True
 

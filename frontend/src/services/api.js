@@ -3,7 +3,8 @@
  */
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/api';
+// En producción leerá la variable de entorno de Render, y en local usará 127.0.0.1 por defecto.
+const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api';
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
